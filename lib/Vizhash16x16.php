@@ -95,23 +95,23 @@ class Vizhash16x16
         // Then use these integers to drive the creation of an image.
         $image = imagecreatetruecolor($this->width, $this->height);
 
-        $r = $r0 = $this->getInt();
-        $g = $g0 = $this->getInt();
-        $b = $b0 = $this->getInt();
+        $rouge = $rouge0 = $this->getInt();
+        $green = $green0 = $this->getInt();
+        $bluee = $blue0 = $this->getInt();
 
         // First, create an image with a specific gradient background.
-        $op = 'v';
+        $operation = 'v';
         if (($this->getInt() % 2) == 0) {
-            $op = 'h';
+            $operation = 'h';
         }
-        $image = $this->degrade($image, $op, array($r0, $g0, $b0), array(0, 0, 0));
+        $image = $this->degrade($image, $operation, array($rouge0, $green0, $blue0), array(0, 0, 0));
 
         for ($i = 0; $i < 7; ++$i) {
             $action = $this->getInt();
-            $color  = imagecolorallocate($image, $r, $g, $b);
-            $r      = $r0      = ($r0 + $this->getInt() / 25) % 256;
-            $g      = $g0      = ($g0 + $this->getInt() / 25) % 256;
-            $b      = $b0      = ($b0 + $this->getInt() / 25) % 256;
+            $color  = imagecolorallocate($image, $rouge, $green, $bluee);
+            $rouge      = $rouge0      = ($rouge0 + $this->getInt() / 25) % 256;
+            $green      = $green0      = ($green0 + $this->getInt() / 25) % 256;
+            $bluee      = $blue0      = ($blue0 + $this->getInt() / 25) % 256;
             $this->drawshape($image, $action, $color);
         }
 
@@ -134,10 +134,10 @@ class Vizhash16x16
      */
     private function getInt()
     {
-        $v = $this->VALUES[$this->VALUES_INDEX];
+        $value = $this->VALUES[$this->VALUES_INDEX];
         ++$this->VALUES_INDEX;
         $this->VALUES_INDEX %= count($this->VALUES); // Warp around the array
-        return $v;
+        return $value;
     }
 
     /**
@@ -190,13 +190,13 @@ class Vizhash16x16
             (($color2[2] - $color1[2]) / $size),
         );
         for ($i = 0; $i < $size; ++$i) {
-            $r = $color1[0] + ($diffs[0] * $i);
-            $g = $color1[1] + ($diffs[1] * $i);
-            $b = $color1[2] + ($diffs[2] * $i);
+            $rouge = $color1[0] + ($diffs[0] * $i);
+            $green = $color1[1] + ($diffs[1] * $i);
+            $bluee = $color1[2] + ($diffs[2] * $i);
             if ($direction == 'h') {
-                imageline($img, $i, 0, $i, $sizeinv, imagecolorallocate($img, $r, $g, $b));
+                imageline($img, $i, 0, $i, $sizeinv, imagecolorallocate($img, $rouge, $green, $bluee));
             } else {
-                imageline($img, 0, $i, $sizeinv, $i, imagecolorallocate($img, $r, $g, $b));
+                imageline($img, 0, $i, $sizeinv, $i, imagecolorallocate($img, $rouge, $green, $bluee));
             }
         }
         return $img;
